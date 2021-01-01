@@ -69,6 +69,7 @@ char_buffer* char_buffer_from_file (char* filename) {
 	while (((c = fgetc (infile)) != EOF)) {
 		char_buffer_add (filedata, c);
 	}
+	char_buffer_add (filedata, 0);
 	return filedata;
 }
 
@@ -78,6 +79,7 @@ char_buffer* char_buffer_from_stdin () {
 	while (((c = fgetc (stdin)) != EOF)) {
 		char_buffer_add (data, c);
 	}
+	char_buffer_add (data, 0);
 	return data;
 }
 

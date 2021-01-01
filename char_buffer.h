@@ -39,12 +39,12 @@ void char_buffer_add_item (char_buffer* buffer, void* item, int size);
 /// @param str the string to add
 void char_buffer_add_str (char_buffer* buffer, char* str);
 
-/// Makes a char_buffer and fills it with the contents of the file at the given filepath.
+/// Makes a char_buffer and fills it with the contents of the file at the given filepath. The resulting data is null-terminated.
 /// @param filename the name of the file to read from
 /// @return the resulting char_buffer
 char_buffer* char_buffer_from_file (char* filename);
 
-/// Makes a char_buffer and fills it with the contents of stdin.
+/// Makes a char_buffer and fills it with the contents of stdin. The resulting data is null-terminated.
 /// @return the resulting buffer
 char_buffer* char_buffer_from_stdin ();
 

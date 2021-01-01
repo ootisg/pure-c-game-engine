@@ -3,6 +3,7 @@
 #include "game_object.h"
 #include "linked_list.h"
 #include "hash_table.h"
+#include "json.h"
 
 //This file is a WIP
 
@@ -291,7 +292,7 @@ void test () {
 	default_init (test_obj);
 	
 	//Test the hash table
-	int data[] = {2, 5, 6, 9, 15, 3, 20};
+	/*int data[] = {2, 5, 6, 9, 15, 3, 20};
 	int data2 = 5;
 	hash_table* table = make_hash_table (malloc (sizeof (hash_table)));
 	hash_table_put (table, "NUM_TWO", 8, &data);
@@ -307,7 +308,23 @@ void test () {
 	printf ("Val: %d\n", (int)hash_table_get (table, "NUM_NINE", 9));
 	printf ("Val: %d\n", (int)hash_table_get (table, "NUM_FIFTEEN", 12));
 	printf ("Val: %d\n", (int)hash_table_get (table, "NUM_THREE", 10));
-	printf ("Val: %d\n", (int)hash_table_get (table, "NUM_TWENTY", 11));
+	printf ("Val: %d\n", (int)hash_table_get (table, "NUM_TWENTY", 11));*/
+	//json_object* jobj = parse_json ("{\"HEKK\":{\"POOpY\":16,\"furries\":[0,5,15,33,{\"type\":\"EPIC GAMER\",\"o\":0},55,54,1]},\"WADU\":{\"ButtHole\":\"Yes\",\"LoOpS\":14.2}}");
+	//printf ("%d\n", ((hash_table*)jobj->token_data)->element_count);
+	int start_time = glutGet (GLUT_ELAPSED_TIME);
+	int idx;
+	json_object* jobj;
+	for (idx = 0; idx < 1; idx++) {
+		jobj = read_json_file ("test_input.json");
+	}
+	int elapsed_time = glutGet (GLUT_ELAPSED_TIME) - start_time;
+	printf ("Parse time: %d ms\n", elapsed_time);
+	linked_list* events = json_get_array (jobj, "events");
+	linked_list_node* cur = events->head;
+	while (cur) {
+		printf ("ID: %s\n", json_get_string ((json_object*)(cur->node_data), "id"));
+		cur = cur->next;
+	}
 }
   
 int main (int argc, char** argv) {
