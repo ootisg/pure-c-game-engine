@@ -17,15 +17,16 @@ struct game_object {
 	char* object_type;
 	void* object_data;
 	GLfloat* vertex_data;
-	void* init_call;
-	void* draw_call;
-	void* game_logic_call;
+	void (*init_call)(struct game_object*);
+	void (*draw_call)(struct game_object*);
+	void (*game_logic_call)(struct game_object*);
 	sprite* sprite;
 	struct animation_handler animator;
 	double x;
 	double y;
 	double width;
 	double height;
+	rectangle* hitbox;
 };
 
 typedef struct game_object game_object;

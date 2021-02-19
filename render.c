@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 
 #include "render.h"
+#include "main.h"
 
 int texture_count = 0;
 char* textures[MAX_TEXTURES];
@@ -124,4 +125,3 @@ void mark_space (int tex_id, int x, int y, int width, int height) {
 		}
 	}
 }
-

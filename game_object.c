@@ -15,8 +15,8 @@ void default_init (game_object* obj) {
 	obj->sprite = make_sprite ("testure.png");
 	obj->x = 0;
 	obj->y = 0;
-	obj->width = 1;
-	obj->height = 1;
+	obj->width = .5;
+	obj->height = .5;
 }
 
 void default_game_logic (game_object* obj) {

@@ -67,7 +67,7 @@ hash_table_entry* make_hash_table_entry (void* ptr, void* key, int key_size, voi
 /// @param data the data to store; the pointer is used, but the data is not copied
 void hash_table_put (hash_table* table, void* key, int key_size, void* data);
 
-/// Gets the value corresponding to the given key from the given hash_table
+/// Gets the value corresponding to the given key from the given hash_table. Returns NULL if the key is not found.
 /// @param table the hash_table to use
 /// @param key the key used to look up the value
 /// @param key_size the size of the key, in bytes

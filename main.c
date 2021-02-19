@@ -3,6 +3,7 @@
 #include "game_object.h"
 #include "linked_list.h"
 #include "hash_table.h"
+#include "object_handler.h"
 #include "json.h"
 
 //This file is a WIP
@@ -233,7 +234,7 @@ void init () {
 }
 
 void render () {
-	default_draw (test_obj);
+	//default_draw (test_obj);
 	refresh_buffers ();
 	refresh_textures ();
 	glUseProgram (g_resources.program);
@@ -272,24 +273,41 @@ void render () {
 }
 
 void display () {
-	//Do nothing, this is gay
+	//Start the timer
+	int start_time = glutGet (GLUT_ELAPSED_TIME);
+	//Clear the screen
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//Do the game logic
+	object_handler* object_handler = get_global_object_handler ();
+	run_objs_game_logic (object_handler);
+	//Render game objects
+	run_objs_draw (object_handler);
+	//Render the screen
 	render ();
-	glutSwapBuffers ();
-	int i = 0;
-	while (i < 20000000) {
-		i++;
-	}
+	//Wait for target FPS
+	printf ("%d ms\n", glutGet (GLUT_ELAPSED_TIME) - start_time);
+	while (glutGet (GLUT_ELAPSED_TIME) - start_time < 17) {}
 	swap_input_buffers ();
-	//printf ("frame");
-	//glutPostRedisplay ();
+	glutPostRedisplay ();
+}
+
+void example_game_logic (game_object* obj) {
+	input_state* inputs = get_inputs ();
+	printf ("%f,%f\n", inputs->mouse_x, inputs->mouse_y);
+	if (inputs->mouse_x != -1.0f) {
+		obj->x = inputs->mouse_x;
+		obj->y = inputs->mouse_y;
+	}
 }
 
 void test () {
 	g_free_objects = init_stack (sizeof (GLfloat*));
 	void* obj_ptr = malloc (sizeof (game_object));
 	test_obj = make_game_object (obj_ptr, "TEST");
+	test_obj->game_logic_call = example_game_logic;
 	default_init (test_obj);
+	
+	declare_game_object (get_global_object_handler (), test_obj);
 	
 	//Test the hash table
 	/*int data[] = {2, 5, 6, 9, 15, 3, 20};
@@ -342,7 +360,7 @@ int main (int argc, char** argv) {
 	glewInit ();
 	printf ("OpenGL %s\n", glGetString (GL_VERSION));
 	init_inputs ();
-	glutDisplayFunc (render);
+	glutDisplayFunc (display);
 	glutKeyboardFunc (key_down_handler);
 	glutKeyboardUpFunc (key_up_handler);
 	glutMouseFunc (mouse_handler);
