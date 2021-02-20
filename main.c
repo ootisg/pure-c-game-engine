@@ -25,6 +25,8 @@ stack* g_free_objects;
 
 game_object* test_obj;
 
+rectangle* checktangle;
+
 struct {
 	GLuint vertex_buffer;
 	GLuint element_buffer;
@@ -297,6 +299,11 @@ void example_game_logic (game_object* obj) {
 	if (inputs->mouse_x != -1.0f) {
 		obj->x = inputs->mouse_x;
 		obj->y = inputs->mouse_y;
+		rectangle* oop = make_rectangle (malloc (sizeof (rectangle)), inputs->mouse_x, inputs->mouse_y, .5, .5);
+		if (rectangle_overlaps (checktangle, oop)) {
+			printf ("TRUE\n");
+		}
+		free (oop);
 	}
 }
 
@@ -308,6 +315,7 @@ void test () {
 	default_init (test_obj);
 	
 	declare_game_object (get_global_object_handler (), test_obj);
+	checktangle = make_rectangle (malloc (sizeof (rectangle)), .75, .75, .25, .25);
 	
 	//Test the hash table
 	/*int data[] = {2, 5, 6, 9, 15, 3, 20};
