@@ -7,6 +7,7 @@
 #include <GL/glut.h>
 
 #include "main.h"
+#include "geometry.h"
 
 struct animation_handler {
 
@@ -20,13 +21,14 @@ struct game_object {
 	void (*init_call)(struct game_object*);
 	void (*draw_call)(struct game_object*);
 	void (*game_logic_call)(struct game_object*);
+	int (*is_colliding)(struct game_object*, struct game_object*);
 	sprite* sprite;
 	struct animation_handler animator;
 	double x;
 	double y;
 	double width;
 	double height;
-	rectangle* hitbox;
+	rectangle hitbox;
 };
 
 typedef struct game_object game_object;
@@ -49,5 +51,9 @@ void default_game_logic (game_object* obj);
 /// The default draw function for a game_object
 /// @param obj the game_object running this function
 void default_draw (game_object* obj);
+
+/// The default hitbox generation function for game_object, which uses its x, y, width, and height
+/// @param obj the game_object whose hitbox will be initialized
+void generate_hitbox (game_object* obj);
 
 #endif

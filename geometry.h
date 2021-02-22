@@ -11,7 +11,7 @@ struct rectangle {
 
 typedef struct rectangle rectangle;
 
-///Initializes a rectangle struct at the given pointer with the given attributes
+///Initializes a rectangle struct at the given pointer with the given attributes.
 ///@param ptr the location to initialize the rectangle
 ///@param x the x-coordinate of the rectangle
 ///@param y the y-coordinate of the rectangle
@@ -19,6 +19,26 @@ typedef struct rectangle rectangle;
 ///@param height the height of the rectangle
 ///@return ptr cast to rectangle*
 rectangle* make_rectangle (void* ptr, float x, float y, float width, float height);
+
+///Initializes a copy of the given rectangle at the location ptr.
+///@param ptr the location to initialize the rectangle
+///@param rect the rectangle who's attributes to copy
+///@return ptr cast to rectangle*
+rectangle* copy_rectangle (void* ptr, rectangle* rect);
+
+///Scales the rectangle to_scale to fit within the rectangle bounds and stores the result at ptr.
+///@param ptr the location to put the scaled rectangle
+///@param to_scale the rectangle to scale; (0,0) is the top left of bounds, (1, 1) is the bottom right
+///@param bounds the rectangle to scale about
+///@return ptr cast to rectangle*
+rectangle* scale_rectangle (void* ptr, rectangle* to_scale, rectangle* bounds);
+
+///Scales the rectangle (x,y,width,height) to fit within the rectangle bounds and stores the result at ptr.
+///@param ptr the location to put the scaled rectangle
+///@param to_scale the rectangle to scale; (0,0) is the top left of bounds, (1, 1) is the bottom right
+///@param bounds the rectangle to scale about
+///@return ptr cast to rectangle*
+rectangle* scale_rectangle_from_attributes (void* ptr, rectangle* bounds, float x, float y, float width, float height);
 
 ///Checks if rect contains the point (x, y)
 ///@param rect the rectangle to check

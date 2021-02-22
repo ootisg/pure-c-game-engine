@@ -7,6 +7,8 @@
 #include "lodepng.h"
 #include "texture_mapping.h"
 #include "render.h"
+#include "json.h"
+#include "layout.h"
 
 /// A struct representing a sprite (woefully underdocumented)
 struct sprite {
@@ -27,6 +29,12 @@ typedef struct sprite sprite;
 /// @param filepath the filepath to get the image from
 /// @return the resulting sprite
 sprite* make_sprite (char* filepath);
+
+/// Makes a sprite from the given json filepath; a force-override image filepath can also be passed, and will be ignored if NULL.
+/// @param json_path the path to the json file to load from; ignored if set to NULL
+/// @param sprite_path the (optional) path to the image (MUST BE A PNG); will be ignored if set to NULL
+/// @return the resulting sprite
+sprite* make_sprite_from_json (char* json_path, char* sprite_path);
 
 /// Draws a sprite at the given coordinates.
 /// @param spr the sprite to draw

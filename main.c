@@ -5,6 +5,7 @@
 #include "hash_table.h"
 #include "object_handler.h"
 #include "json.h"
+#include "layout.h"
 
 //This file is a WIP
 
@@ -295,15 +296,21 @@ void display () {
 
 void example_game_logic (game_object* obj) {
 	input_state* inputs = get_inputs ();
-	printf ("%f,%f\n", inputs->mouse_x, inputs->mouse_y);
 	if (inputs->mouse_x != -1.0f) {
 		obj->x = inputs->mouse_x;
 		obj->y = inputs->mouse_y;
-		rectangle* oop = make_rectangle (malloc (sizeof (rectangle)), inputs->mouse_x, inputs->mouse_y, .5, .5);
-		if (rectangle_overlaps (checktangle, oop)) {
-			printf ("TRUE\n");
+		generate_hitbox (obj);
+	}
+	linked_list* c_objs = game_object_get_colliding (get_global_object_handler (), obj, "TEST2");
+	if (c_objs->size > 0) {
+		linked_list_node* curr = c_objs->head;
+		while (curr) {
+			game_object* curr_obj = curr->node_data;
+			curr_obj->x = ((float)rand () / RAND_MAX) * .875;
+			curr_obj->y = ((float)rand () / RAND_MAX) * .875;
+			generate_hitbox (curr_obj);
+			curr = curr->next;
 		}
-		free (oop);
 	}
 }
 
@@ -312,10 +319,71 @@ void test () {
 	void* obj_ptr = malloc (sizeof (game_object));
 	test_obj = make_game_object (obj_ptr, "TEST");
 	test_obj->game_logic_call = example_game_logic;
-	default_init (test_obj);
+	
+	game_object* obj2 = make_game_object (malloc (sizeof (game_object)), "TEST");
+	game_object* obj3 = make_game_object (malloc (sizeof (game_object)), "TEST2");
+	game_object* obj4 = make_game_object (malloc (sizeof (game_object)), "TEST2");
+	game_object* obj5 = make_game_object (malloc (sizeof (game_object)), "TEST2");
+	game_object* obj6 = make_game_object (malloc (sizeof (game_object)), "TEST2");
 	
 	declare_game_object (get_global_object_handler (), test_obj);
+	declare_game_object (get_global_object_handler (), obj2);
+	declare_game_object (get_global_object_handler (), obj3);
+	declare_game_object (get_global_object_handler (), obj4);
+	declare_game_object (get_global_object_handler (), obj5);
+	declare_game_object (get_global_object_handler (), obj6);
+	
+	//Set hitboxes
+	//test_obj
+	test_obj->width = .125;
+	test_obj->height = .125;
+	
+	//obj2
+	obj2->x = .6;
+	obj2->y = .4;
+	obj2->width = .125;
+	obj2->height = .125;
+	generate_hitbox (obj2);
+	
+	//obj3
+	obj3->x = .7;
+	obj3->y = .8;
+	obj3->width = .125;
+	obj3->height = .125;
+	generate_hitbox (obj3);
+	
+	//obj4
+	obj4->x = .3;
+	obj4->y = .5;
+	obj4->width = .125;
+	obj4->height = .125;
+	generate_hitbox (obj4);
+	
+	//obj5
+	obj5->x = .4;
+	obj5->y = .4;
+	obj5->width = .125;
+	obj5->height = .125;
+	generate_hitbox (obj5);
+	
+	//obj6
+	obj6->x = .0;
+	obj6->y = .7;
+	obj6->width = .125;
+	obj6->height = .125;
+	generate_hitbox (obj6);
+	
 	checktangle = make_rectangle (malloc (sizeof (rectangle)), .75, .75, .25, .25);
+	
+	json_object* jobj2 = read_json_file ("resources/sprites/config/example.json");
+	layout_element* lelem = make_layout (malloc (sizeof (layout_element)), jobj2);
+	linked_list* rgs = get_layout_reigons (lelem, checktangle);
+	linked_list_node* curr = rgs->head;
+	printf ("OOP\n");
+	while (curr) {
+		print_rectangle (curr->node_data);
+		curr = curr->next;
+	}
 	
 	//Test the hash table
 	/*int data[] = {2, 5, 6, 9, 15, 3, 20};

@@ -1,9 +1,11 @@
-main: main.c inputs sprite render geometry char_buffer linked_list hash_table json object_handler game_object stack glew lodepng
-	gcc main.c inputs.o sprite.o render.o geometry.o char_buffer.o linked_list.o hash_table.o json.o object_handler.o game_object.o stack.o glew.o lodepng.o -DGLEW_STATIC -lopengl32 -lglu32 -lfreeglut -lglew32 -o main.exe
+main: main.c inputs sprite layout render geometry char_buffer linked_list hash_table json object_handler game_object stack glew lodepng
+	gcc main.c inputs.o sprite.o layout.o render.o geometry.o char_buffer.o linked_list.o hash_table.o json.o object_handler.o game_object.o stack.o glew.o lodepng.o -DGLEW_STATIC -lopengl32 -lglu32 -lfreeglut -lglew32 -o main.exe
 inputs: inputs.c inputs.h
 	gcc inputs.c -c -LGL -Llib -lopengl32 -lglu32 -lfreeglut -lglew32
 sprite: sprite.c sprite.h
 	gcc sprite.c -c
+layout: layout.c layout.h
+	gcc layout.c -c
 render: render.c render.h texture_mapping.h
 	gcc render.c -c
 geometry: geometry.c geometry.h

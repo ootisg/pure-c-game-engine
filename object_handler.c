@@ -24,7 +24,7 @@ int declare_game_object (object_handler* obj_handler, game_object* obj) {
 		//Add the new object to the new list
 		linked_list_add (new_list, obj, sizeof (game_object));
 	}
-	printf ("%d\n", obj);
+	obj->init_call (obj);
 }
 
 void run_objs_game_logic (object_handler* obj_handler) {
@@ -68,4 +68,33 @@ object_handler* get_global_object_handler () {
 		global_object_handler = make_object_handler (malloc (sizeof (object_handler)));
 	}
 	return global_object_handler;
+}
+
+linked_list* get_objs_by_type (object_handler* obj_handler, char* type) {
+	return hash_table_get (obj_handler->objects_map, type, strlen (type));
+}
+
+int game_object_colliding_type (object_handler* obj_handler, game_object* obj, char* type) {
+	linked_list* obj_list = get_objs_by_type (obj_handler, type);
+	linked_list_node* curr = obj_list->head;
+	while (curr) {
+		if (curr->node_data != obj && obj->is_colliding (obj, curr->node_data)) {
+			return 1;
+		}
+		curr = curr->next;
+	}
+	return 0;
+}
+
+linked_list* game_object_get_colliding (object_handler* obj_handler, game_object* obj, char* type) {
+	linked_list* colliding_list = make_linked_list (malloc (sizeof (linked_list)));
+	linked_list* obj_list = get_objs_by_type (obj_handler, type);
+	linked_list_node* curr = obj_list->head;
+	while (curr) {
+		if (curr->node_data != obj && obj->is_colliding (obj, curr->node_data)) {
+			linked_list_add (colliding_list, curr->node_data, sizeof (game_object));
+		}
+		curr = curr->next;
+	}
+	return colliding_list;
 }

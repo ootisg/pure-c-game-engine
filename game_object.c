@@ -1,5 +1,16 @@
 #include "game_object.h"
 
+int default_is_colliding (game_object* this, game_object* other) {
+	if (rectangle_overlaps (&(this->hitbox), &(other->hitbox))) {
+		return 1;
+	}
+	return 0;
+}
+
+void generate_hitbox (game_object* obj) {
+	make_rectangle (&(obj->hitbox), obj->x, obj->y, obj->width, obj->height);
+}
+
 game_object* make_game_object (void* ptr, char* obj_type) {
 	game_object* obj = (game_object*)ptr;
 	obj->object_type = obj_type;
@@ -7,6 +18,7 @@ game_object* make_game_object (void* ptr, char* obj_type) {
 	obj->init_call = default_init;
 	obj->draw_call = default_draw;
 	obj->game_logic_call = default_game_logic;
+	obj->is_colliding = default_is_colliding;
 	return obj;
 }
 
