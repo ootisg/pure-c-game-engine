@@ -8,7 +8,7 @@
 #include "texture_mapping.h"
 
 #define MAX_TEXTURES 1024
-#define TEXTURE_SIZE 256
+#define TEXTURE_SIZE 1024
 #define TEXTURE_TILE_SIZE 8
 
 #define MAX_OBJECTS 1048571 //Perhaps a bit excessive

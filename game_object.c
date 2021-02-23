@@ -19,6 +19,7 @@ game_object* make_game_object (void* ptr, char* obj_type) {
 	obj->draw_call = default_draw;
 	obj->game_logic_call = default_game_logic;
 	obj->is_colliding = default_is_colliding;
+	make_animation_handler (&(obj->animator));
 	return obj;
 }
 
@@ -35,11 +36,20 @@ void default_game_logic (game_object* obj) {
 	//Intentionally left empty
 }
 
+animation_handler* make_animation_handler (void* ptr) {
+	animation_handler* h_ptr = (animation_handler*)ptr;
+	h_ptr->frame = 0;
+	h_ptr->animation_speed = .25;
+	return h_ptr;
+}
+
 void default_draw (game_object* obj) {
+	(&(obj->animator))->frame++;
 	if (obj->sprite) {
 		
 		//Get the object's position and sprite data
-		rectangle* r = &(obj->sprite->mapping->bounds);
+		int draw_frame = (int)(obj->animator.frame * obj->animator.animation_speed) % obj->sprite->frame_count;
+		rectangle* r = &(obj->sprite->frames[draw_frame]);
 		unsigned int tex_id = obj->sprite->mapping->tex_id;
 		
 		//Update the object's vertex data

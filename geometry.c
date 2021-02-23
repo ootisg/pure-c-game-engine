@@ -32,7 +32,7 @@ rectangle* scale_rectangle (void* ptr, rectangle* to_scale, rectangle* bounds) {
 rectangle* scale_rectangle_from_attributes (void* ptr, rectangle* bounds, float x, float y, float width, float height) {
 	rectangle* r_ptr = (rectangle*)ptr;
 	r_ptr->x = bounds->x + x * bounds->width;
-	r_ptr->y = bounds->y + x * bounds->height;
+	r_ptr->y = bounds->y + y * bounds->height;
 	r_ptr->width = bounds->width * width;
 	r_ptr->height = bounds->height * height;
 	return r_ptr;

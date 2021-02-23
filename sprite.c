@@ -46,15 +46,18 @@ sprite* make_sprite_from_json (char* json_path, char* sprite_path) {
 	out_sprite->height = map->bounds.height;
 	if (layout) {
 		linked_list* frames_list = get_layout_reigons (layout, &(map->bounds));
+		printf ("%d\n", frames_list->size);
 		out_sprite->frame_count = frames_list->size; //TODO
 		rectangle* frames = malloc (sizeof (rectangle) * frames_list->size);
 		linked_list_node* curr = frames_list->head;
 		int i = 0;
-		while (curr) {
-			frames[i] = *((rectangle*)curr->node_data);
+		while (i < frames_list->size) {
+			print_rectangle (curr->node_data);
+			memcpy (frames + i, ((rectangle*)curr->node_data), sizeof (rectangle));
 			i++;
 			curr = curr->next;
 		}
+		out_sprite->frames = frames;
 		//Free all the resources that were used
 		free_layout (layout);
 		free_linked_list_elements (frames_list, NULL);
@@ -87,11 +90,11 @@ void transfer_to_texture (texture_mapping* map, unsigned char* source, int sourc
 	int x2 = x1 + source_width; //TODO unused
 	int y2 = y2 - source_height;
 	
-	//Copy over and flip the output image vertically
+	//Copy over
 	int wx, wy;
 	for (wy = 0; wy < source_height; wy++) {
-		for (wx = 0; wx < source_height; wx++) {
-			dest_int[(wy + y1) * TEXTURE_SIZE + wx + x1] = source_int [(source_height - wy - 1) * source_width + wx];
+		for (wx = 0; wx < source_width; wx++) {
+			dest_int[(wy + y1) * TEXTURE_SIZE + wx + x1] = source_int [(wy) * source_width + wx];
 		}
 	}
 }

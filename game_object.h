@@ -10,7 +10,8 @@
 #include "geometry.h"
 
 struct animation_handler {
-
+	int frame;
+	float animation_speed;
 };
 
 /// A struct representing a game object (also woefully underdocumented)
@@ -39,6 +40,10 @@ typedef struct animation_handler animation_handler;
 /// @param type the type name of the game_object
 /// @return ptr cast to a game_object*
 game_object* make_game_object (void* ptr, char* type);
+
+/// Initializes a new animation_handler at the location ptr
+/// @return ptr cast to animation_handler*
+animation_handler* make_animation_handler (void* ptr);
 
 /// The default init function for a game_object
 /// @param obj the game_object running this function

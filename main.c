@@ -8,6 +8,8 @@
 #include "layout.h"
 
 //This file is a WIP
+//Probably not from this file, but there seems to be a severe memory leak.
+//There's also a memory leak in the JSON parser.
 
 GLfloat g_ex_vertex_buffer_data[] = { 
     -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0i,
@@ -367,11 +369,18 @@ void test () {
 	generate_hitbox (obj5);
 	
 	//obj6
+	obj6->sprite = make_sprite_from_json ("resources/sprites/config/blockmerge.json", "resources/sprites/blockmerge.png");
 	obj6->x = .0;
 	obj6->y = .7;
-	obj6->width = .125;
+	obj6->width = .25;
 	obj6->height = .125;
 	generate_hitbox (obj6);
+	
+	print_rectangle (&(obj6->sprite->mapping->bounds));
+	int i;
+	for (i = 0; i < obj6->sprite->frame_count; i++) {
+		print_rectangle (obj6->sprite->frames + i);
+	}
 	
 	checktangle = make_rectangle (malloc (sizeof (rectangle)), .75, .75, .25, .25);
 	

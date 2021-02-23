@@ -32,6 +32,7 @@ layout_element* make_layout_rec (layout_element* ptr, json_object* description) 
 						//TODO find a better way to deal with floating point weirdnes
 						layout_element* new_layout = malloc (sizeof (layout_element));
 						scale_rectangle_from_attributes (&(new_layout->bounds), parent_bounds, wx, wy, new_width, new_height);
+						print_rectangle (&(new_layout->bounds));
 						linked_list_add (children_list, new_layout, sizeof (layout_element));
 						make_layout_rec (new_layout, curr_obj);
 					}
@@ -68,6 +69,12 @@ void add_layout_reigons (layout_element* layout, linked_list* layout_list, recta
 	}
 }
 
+linked_list* get_layout_reigons (layout_element* layout, rectangle* bounds) {
+	linked_list* reigons_list = make_linked_list (malloc (sizeof (linked_list)));
+	add_layout_reigons (layout, reigons_list, bounds);
+	return reigons_list;
+}
+
 void free_layout (layout_element* layout) {
 	linked_list* to_free = &(layout->children);
 	linked_list_node* curr = to_free->head;
@@ -76,10 +83,4 @@ void free_layout (layout_element* layout) {
 		curr = curr->next;
 	}
 	free (layout);
-}
-
-linked_list* get_layout_reigons (layout_element* layout, rectangle* bounds) {
-	linked_list* reigons_list = make_linked_list (malloc (sizeof (linked_list)));
-	add_layout_reigons (layout, reigons_list, bounds);
-	return reigons_list;
 }
