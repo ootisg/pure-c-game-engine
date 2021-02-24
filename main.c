@@ -139,6 +139,10 @@ GLuint make_texture_from_buffer (char* buffer, int width, int height) {
 	return texture;
 }
 
+GLuint free_texture (GLuint texture) {
+	glDeleteTextures (1, &texture);
+}
+
 GLuint make_texture (char* filename) {
 	//Read from file then make the texture
 	int width, height;
@@ -205,6 +209,9 @@ void refresh_buffers () {
 }
 
 void refresh_textures () {
+	if (g_resources.texture) {
+		free_texture (g_resources.texture);
+	}
 	g_resources.texture = make_texture_from_buffer (get_sprite_texture (0), TEXTURE_SIZE, TEXTURE_SIZE);
 }
 
