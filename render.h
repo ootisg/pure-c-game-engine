@@ -1,6 +1,8 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+#include <math.h>
+
 #include "geometry.h"
 #include "lodepng.h"
 #include "inputs.h"
@@ -48,5 +50,11 @@ int space_available (int tex_id, int x, int y, int width, int height);
 /// @param width the width of the bounding box to mark, in px
 /// @param height the height of the bounding box to mark, in px
 void mark_space (int tex_id, int x, int y, int width, int height);
+
+/// Initializes a rectangle at ptr to the rectangle bounds, snapped to the pixels of the sprite textures
+/// @param ptr the location to initialize the new rectangle at
+/// @param bounds the rectangle to snap
+/// @return ptr cast to rectangle*
+rectangle* snap_to_textures (rectangle* ptr, rectangle* bounds);
 
 #endif

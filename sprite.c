@@ -53,7 +53,7 @@ sprite* make_sprite_from_json (char* json_path, char* sprite_path) {
 		int i = 0;
 		while (i < frames_list->size) {
 			print_rectangle (curr->node_data);
-			memcpy (frames + i, ((rectangle*)curr->node_data), sizeof (rectangle));
+			snap_to_textures (frames + i, curr->node_data);
 			i++;
 			curr = curr->next;
 		}

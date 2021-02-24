@@ -251,6 +251,8 @@ int make_resources () {
 }
 
 void init () {
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable( GL_BLEND );
 	g_resources.refresh_texture = 1;
 	make_resources ();
 }
