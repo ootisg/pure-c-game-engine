@@ -97,4 +97,7 @@ void transfer_to_texture (texture_mapping* map, unsigned char* source, int sourc
 			dest_int[(wy + y1) * TEXTURE_SIZE + wx + x1] = source_int [(wy) * source_width + wx];
 		}
 	}
+	
+	//Refresh the sprite texture
+	refresh_sprite_textures ();
 }

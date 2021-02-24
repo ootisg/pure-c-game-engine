@@ -17,5 +17,6 @@
 #define RENDER_OBJECT_SIZE 24
 
 GLfloat* alloc_render_object ();
+void refresh_sprite_textures ();
 
 #endif

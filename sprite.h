@@ -9,6 +9,7 @@
 #include "render.h"
 #include "json.h"
 #include "layout.h"
+#include "main.h"
 
 /// A struct representing a sprite (woefully underdocumented)
 struct sprite {

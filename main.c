@@ -37,6 +37,7 @@ struct {
 	GLuint frag_shader;
 	GLuint program;
 	GLuint texture;
+	int refresh_texture;
 	struct {
 		GLuint position;
 		GLuint tex;
@@ -46,6 +47,10 @@ struct {
 		GLuint texture;
 	} uniforms;
 } g_resources;
+
+void refresh_sprite_textures () {
+	g_resources.refresh_texture = 1;
+}
 
 void show_info_log(
     GLuint object,
@@ -209,10 +214,14 @@ void refresh_buffers () {
 }
 
 void refresh_textures () {
-	if (g_resources.texture) {
-		free_texture (g_resources.texture);
+	if (g_resources.refresh_texture || !g_resources.texture) {
+		printf ("THIS IS RUNNING\n");
+		if (g_resources.texture) {
+			free_texture (g_resources.texture);
+		}
+		g_resources.texture = make_texture_from_buffer (get_sprite_texture (0), TEXTURE_SIZE, TEXTURE_SIZE);
+		g_resources.refresh_texture = 0;
 	}
-	g_resources.texture = make_texture_from_buffer (get_sprite_texture (0), TEXTURE_SIZE, TEXTURE_SIZE);
 }
 
 int make_resources () {
@@ -242,6 +251,7 @@ int make_resources () {
 }
 
 void init () {
+	g_resources.refresh_texture = 1;
 	make_resources ();
 }
 
