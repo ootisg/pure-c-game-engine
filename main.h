@@ -18,5 +18,7 @@
 
 GLfloat* alloc_render_object ();
 void refresh_sprite_textures ();
+int get_frame_count ();
+int get_frame_time_ms ();
 
 #endif

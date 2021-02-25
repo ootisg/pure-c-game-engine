@@ -38,17 +38,56 @@ void default_game_logic (game_object* obj) {
 
 animation_handler* make_animation_handler (void* ptr) {
 	animation_handler* h_ptr = (animation_handler*)ptr;
-	h_ptr->frame = 0;
-	h_ptr->animation_speed = .25;
+	h_ptr->flags = ANIMATION_HANDLER_TYPE_MS | ANIMATION_HANDLER_LOOP_REPEAT;
+	h_ptr->start_time = get_frame_time_ms ();
+	h_ptr->frame_count = 0;
+	h_ptr->frame_time = 17;
 	return h_ptr;
 }
 
+int animation_handler_get_frame (animation_handler* ptr) {
+	int anim_frame;
+	if ((ptr->flags) & ANIMATION_HANDLER_TYPE) {
+		//Animation by ms
+		anim_frame = (int)((get_frame_time_ms () - ptr->start_time) / ptr->frame_time);
+	} else {
+		//Animation by frames
+		anim_frame = (int)((get_frame_count () - ptr->start_time) / ptr->frame_time);
+	}
+	if ((ptr->flags) & ANIMATION_HANDLER_LOOP) {
+		//Animation loops
+		return anim_frame % ptr->frame_count;
+	} else {
+		//Animation does not loop
+		if (anim_frame < ptr->frame_count - 1) {
+			//Just return the frame
+			return anim_frame;
+		} else {
+			//Animation is finished
+			ptr->flags |= ANIMATION_HANDLER_FINISHED;
+			return ptr->frame_count - 1;
+		}
+	}
+}
+
+void animation_handler_set_properties (animation_handler* ptr, int properties, int val) {
+	if (val) {
+		ptr->flags |= properties;
+	} else {
+		ptr->flags &= ~properties;
+	}
+}
+
+int animation_handler_get_properties (animation_handler* ptr, int property) {
+	return (ptr->flags) & property;
+}
+
 void default_draw (game_object* obj) {
-	(&(obj->animator))->frame++;
 	if (obj->sprite) {
 		
 		//Get the object's position and sprite data
-		int draw_frame = (int)(obj->animator.frame * obj->animator.animation_speed) % obj->sprite->frame_count;
+		obj->animator.frame_count = obj->sprite->frame_count;
+		int draw_frame = animation_handler_get_frame (&(obj->animator));
 		rectangle* r = &(obj->sprite->frames[draw_frame]);
 		unsigned int tex_id = obj->sprite->mapping->tex_id;
 		

@@ -9,9 +9,21 @@
 #include "main.h"
 #include "geometry.h"
 
+#define ANIMATION_HANDLER_TYPE_FRAME 0x0
+#define ANIMATION_HANDLER_TYPE_MS 0x1
+#define ANIMATION_HANDLER_TYPE 0x1
+
+#define ANIMATION_HANDLER_LOOP_STOP 0x0
+#define ANIMATION_HANDLER_LOOP_REPEAT 0x2
+#define ANIMATION_HANDLER_LOOP 0x2
+
+#define ANIMATION_HANDLER_FINISHED 0x4
+
 struct animation_handler {
-	int frame;
-	float animation_speed;
+	int flags;
+	int start_time;
+	int frame_count;
+	float frame_time;
 };
 
 /// A struct representing a game object (also woefully underdocumented)
@@ -42,8 +54,32 @@ typedef struct animation_handler animation_handler;
 game_object* make_game_object (void* ptr, char* type);
 
 /// Initializes a new animation_handler at the location ptr
+/// Default properties: animates 1 frame, looping, using ms at 60fps (17 ms/frame)
 /// @return ptr cast to animation_handler*
 animation_handler* make_animation_handler (void* ptr);
+
+/// Sets the properties defined by the bitmask properties
+/// 	0x1: Timing type, 0 for timing by frame, 1 for timing by ms
+///		0x2: Loop, 0 for no loop, 1 for looping animations
+///		0x4: Finished, 0 when not finished, 1 otherwise; only applicable to non-looping animations
+///	@param ptr the animation_handler to use
+/// @param properties a bitmask of the properties to set/clear
+/// @param val sets the specified properties if non-zero; clears them otherwise
+void animation_handler_set_properties (animation_handler* ptr, int properties, int val);
+
+/// Gets the properties defined by the following bitmask:
+/// 	0x1: Timing type, 0 for timing by frame, 1 for timing by ms
+///		0x2: Loop, 0 for no loop, 1 for looping animations
+///		0x4: Finished, 0 when not finished, 1 otherwise; only applicable to non-looping animations
+///	@param ptr the animation_handler to use
+/// @param properties a bitmask of the properties to query
+/// @return zero if all the specified properties are 0; non-zero otherwise
+int animation_handler_get_properties (animation_handler* ptr, int property);
+
+/// Gets the current animation frame of the given animation_handler ptr
+/// @param the animation_handler to use
+/// @return the frame of animation the animation_handler ptr is on
+int animation_handler_get_frame (animation_handler* ptr);
 
 /// The default init function for a game_object
 /// @param obj the game_object running this function

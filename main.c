@@ -30,6 +30,9 @@ game_object* test_obj;
 
 rectangle* checktangle;
 
+int frame_count;
+int frame_start_time;
+
 struct {
 	GLuint vertex_buffer;
 	GLuint element_buffer;
@@ -186,7 +189,6 @@ GLuint make_shader (GLenum type, const char* filename) {
         glDeleteShader(shader);
         return 0;
 	}
-	
 	//RETURN THE SHADER (IMPORTANT!)
 	return shader;
 }
@@ -253,6 +255,7 @@ int make_resources () {
 void init () {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable( GL_BLEND );
+	frame_count = 0;
 	g_resources.refresh_texture = 1;
 	make_resources ();
 }
@@ -297,8 +300,9 @@ void render () {
 }
 
 void display () {
-	//Start the timer
-	int start_time = glutGet (GLUT_ELAPSED_TIME);
+	//Set timing properties
+	frame_start_time = glutGet (GLUT_ELAPSED_TIME);
+	frame_count++;
 	//Clear the screen
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//Do the game logic
@@ -309,8 +313,8 @@ void display () {
 	//Render the screen
 	render ();
 	//Wait for target FPS
-	printf ("%d ms\n", glutGet (GLUT_ELAPSED_TIME) - start_time);
-	while (glutGet (GLUT_ELAPSED_TIME) - start_time < 17) {}
+	printf ("%d ms\n", glutGet (GLUT_ELAPSED_TIME) - frame_start_time);
+	while (glutGet (GLUT_ELAPSED_TIME) - frame_start_time < 17) {}
 	swap_input_buffers ();
 	glutPostRedisplay ();
 }
@@ -447,6 +451,14 @@ void test () {
 		printf ("ID: %s\n", json_get_string ((json_object*)(cur->node_data), "id"));
 		cur = cur->next;
 	}
+}
+
+int get_frame_count () {
+	return frame_count;
+}
+
+int get_frame_time_ms () {
+	return frame_start_time;
 }
   
 int main (int argc, char** argv) {
