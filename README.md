@@ -42,18 +42,18 @@ The JSON formatting is as follows:
 	The file has one optional field and one required field.  
 	```"sprite_path"``` is an optional field that contains the image filepath for the sprite.  
 	```"layout"``` is a required array field that contains the frame layout for the sprite. It contatins one or more JSON objects of the following format:  
-	```{
-		"type": - can be either "rect" or "grid". Elements of type "grid" specify a grid to fill the area, with cells of size "width" and "height". "rect" specifies one single rectangle.
-		"width": - the width of the frame(s)
-		"height": - the height of the frame(s)
-		"x": - the x-position of the frame source (only used for "rect" elements)
-		"y": - the y-position of the frame source (only used for "rect" elements)
-		"layout" - a layout to apply within the frame(s) to parse subframes. (Note: this field makes the format entirely recursive.)
-	}```
+	```{  
+		"type": - can be either "rect" or "grid". Elements of type "grid" specify a grid to fill the area, with cells of size "width" and "height". "rect" specifies one single rectangle.  
+		"width": - the width of the frame(s)  
+		"height": - the height of the frame(s)  
+		"x": - the x-position of the frame source (only used for "rect" elements)  
+		"y": - the y-position of the frame source (only used for "rect" elements)  
+		"layout" - a layout to apply within the frame(s) to parse subframes. (Note: this field makes the format entirely recursive.)  
+	}```  
 	Note that the dimensions used for these fields are relative to the size of their container. This starts at the top level as the top-left corner of the sprite being (0,0) and the bottom-right being (1,1). This means that for images or recursive bounds that don't have an equal width and height, x and y are on different scales and a frame with width=height might not be square.
 	Some example files are included below:  
 	  
-	```{
+	{
 	"layout":[
 		{
 			"type":"grid",
@@ -61,10 +61,10 @@ The JSON formatting is as follows:
 			"height":1.0
 		}
 	]
-	}```  
+	}
 	This file creates 4 frames arranged sequentially, each one being 1/4 the width of the image file and taking the entire height of the image. For example, using this on a 128x32px spritesheet would yield 4 32x32 frames.  
 	  
-	```{
+	{
 	"layout":[
 		{
 			"type":"rect",
@@ -95,10 +95,10 @@ The JSON formatting is as follows:
 			"height":1.0
 		}
 	]
-	}```  
+	}
 	Behaves identically to the previous example.
 	  
-	```{
+	{
 	"layout":[
 		{
 			"type":"rect",
@@ -108,10 +108,10 @@ The JSON formatting is as follows:
 			"height":0.5
 		}
 	]
-	}```
+	}
 	This file creates 1 frame from the middle of the image, with a border of 1/4 the image width and height cropped out. Using this on a 64x64 image would result in a 32x32 frame taken from the center of the image.  
 	  
-	```{
+	{
 	"layout":[
 		{
 			"type":"rect",
@@ -128,10 +128,10 @@ The JSON formatting is as follows:
 			]
 		}
 	]
-	}```
+	}
 	This file takes the top 1/4 of the image as a horizontal slice, then splits it into 4 sequential frames. Using this on a 128x128 image would result in four 32x32 frames lined up at the top edge of the image.  
 	  
-	```{
+	{
 	"layout":[
 		{
 			"type":"grid",
@@ -148,18 +148,18 @@ The JSON formatting is as follows:
 			]
 		}
 	]
-	}```
+	}
 	This file splits the image into an 8x8 grid, then takes the center of each cell and cuts off a 25% wide border. Using this on a 256x256 image would yield 64 16x16 frames. This type of layout is particularly useful for spritesheets with borders or padding between the sprites.  
 	  
-	```{
+	{
 	"source_path":"resources/sprites/slime_idle.png",
 	"layout":[
 		"type":"grid",
 		"width":0.125,
 		"height":1.0
 	]
-	}```
-	This file uses the optional ```source_path``` parameter to specify an image path. The idle animation spritesheet is parsed into 8 frames lined up horizontally.  
+	}
+	This file uses the optional source_path parameter to specify an image path. The idle animation spritesheet is parsed into 8 frames lined up horizontally.  
   
 To get player inputs, use the ```get_inputs()``` function. This returns a struct of the type ```input_state```, which contains info about which keys are held down, which were just pressed or released, and some state information about mouse inputs.  
   
