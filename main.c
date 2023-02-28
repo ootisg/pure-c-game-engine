@@ -11,6 +11,13 @@
 //Probably not from this file, but there seems to be a severe memory leak.
 //There's also a memory leak in the JSON parser.
 
+
+void game_init () {
+	
+	//Entry point
+	
+}
+
 GLfloat g_ex_vertex_buffer_data[] = { 
     -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0i,
      1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0i,
@@ -258,6 +265,7 @@ void init () {
 	frame_count = 0;
 	g_resources.refresh_texture = 1;
 	make_resources ();
+	game_init ();
 }
 
 void render () {
@@ -483,7 +491,7 @@ int main (int argc, char** argv) {
 	glutMotionFunc (mouse_motion_handler);
 	glutPassiveMotionFunc (passive_mouse_motion_handler);
 	init ();
-	test ();
+	//test ();
 	glutMainLoop ();
 	return 0;
 }

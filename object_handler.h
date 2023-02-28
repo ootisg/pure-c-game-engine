@@ -41,7 +41,7 @@ void run_objs_draw (object_handler* obj_handler);
 ///Gets all objects of the given type.
 ///@param obj_handler the object_handler to search
 ///@param type the type string to search for
-///@return the list of all objects of the given type; null if none are found
+///@return the list of all objects of the given type; null if none are found. Do not free this list.
 linked_list* get_objs_by_type (object_handler* obj_handler, char* type);
 
 ///Checks if obj is colliding with an object of the given type tracked by obj_handler.
@@ -55,7 +55,7 @@ int game_object_colliding_type (object_handler* obj_handler, game_object* obj, c
 ///@param obj_handler the object_handler to search
 ///@param obj the game_object to do collision checks against
 ///@param type the game_object type to search for
-///@return a linked_list of all colliding objects of the given type. Can be free()'d.
+///@return a linked_list of all colliding objects of the given type. Free after use by calling free_linked_list_elements(), and then calling free() on the list pointer.
 linked_list* game_object_get_colliding (object_handler* obj_handler, game_object* obj, char* type);
 
 #endif
